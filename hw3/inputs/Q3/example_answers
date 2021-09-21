@@ -1,0 +1,3 @@
+Q3
+10,100           unique (should print 1)
+500, 1000, 3000  not unique (should print 0)

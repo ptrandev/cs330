@@ -81,10 +81,23 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
 # PART 2 STARTER CODE
 ############################################################
 
-
+# not done
 def check_stable(N, hospital_prefs, student_prefs, match_file):
     # Implement checking of stable matches from output
     # ...
+
+    # inverse student preference array
+    student_prefs = inverse_prefs(N, student_prefs)
+
+    f = open(match_file, "r")
+    matches = f.readLines()
+
+    for match in matches:
+        match = match.split(",")
+
+    print(match_file)
+    # check that all hospitals and students have been matches
+
     print(1)  # if stable
     print(0)  # if not stable
     # Note: Make the printing of stableness be the only print statement for submission!
@@ -98,9 +111,23 @@ def check_stable(N, hospital_prefs, student_prefs, match_file):
 def check_unique(N, hospital_prefs, student_prefs):
     # Implement checking of a unique stable matching for given preferences
     # ...
-    print(1)  # if unique
-    print(0)  # if not unique
-    # Note: Make the printing of uniqueness be the only print statement for submission!
+
+    # run GS for hospital and student proposing
+    run_GS(N, hospital_prefs, student_prefs, "hospital_optimal")
+    run_GS(N, student_prefs, hospital_prefs, "student_optimal")
+
+    # create arrays from matching requests
+    hospital_optimal = [line.strip().split(",") for line in open("hospital_optimal")]
+    student_optimal = [line.strip().split(",") for line in open("student_optimal")]
+
+    # iterate through all results for students
+    for student in student_optimal:
+        # if the student and hopsital match aren't the same, print 0 and return
+        if student[1] != hospital_optimal[int(student[0])][0]:
+            print(0)
+            return
+
+    print(1)  # else all matches are the same, print 1
 
 
 ############################################################

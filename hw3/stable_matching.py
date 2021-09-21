@@ -44,6 +44,9 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
         None
     ]  # stores current assignment; index -> student, value -> hospital
 
+    # inverse student preference array
+    student_prefs = inverse_prefs(N, student_prefs)
+
     # algorithm - Hospital giving offer to student
     while free_hospital:  # returns True if list is nonempty
         # print('--------')
@@ -57,14 +60,11 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
             current[student] = hospital
             # print('student is not paired')
         else:
-            # slow way to compute
-            if student_prefs[student].index(current[student]) < student_prefs[
-                student
-            ].index(hospital):
-                ############################################################
-                # The code in the if statement runs in linear time!
-                # Fix that...
-                ############################################################
+            # O(1) because of inverse preference array
+            if (
+                student_prefs[student][current[student]]
+                < student_prefs[student][hospital]
+            ):
                 free_hospital.append(hospital)
             else:
                 # student switches to new hospital, old hospital becomes free

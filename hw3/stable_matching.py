@@ -84,16 +84,15 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
 # not done
 def check_stable(N, hospital_prefs, student_prefs, match_file):
     # Implement checking of stable matches from output
-    # ...
 
     # inverse student preference array
     student_prefs = inverse_prefs(N, student_prefs)
 
     f = open(match_file, "r")
-    matches = f.readLines()
+    pairings = f.readLines()
 
-    for match in matches:
-        match = match.split(",")
+    for pair in pairings:
+        pair = pair.split(",")  # [h, s]
 
     print(match_file)
     # check that all hospitals and students have been matches
@@ -110,24 +109,27 @@ def check_stable(N, hospital_prefs, student_prefs, match_file):
 
 def check_unique(N, hospital_prefs, student_prefs):
     # Implement checking of a unique stable matching for given preferences
-    # ...
 
     # run GS for hospital and student proposing
     run_GS(N, hospital_prefs, student_prefs, "hospital_optimal")
     run_GS(N, student_prefs, hospital_prefs, "student_optimal")
 
     # create arrays from matching requests
-    hospital_optimal = [line.strip().split(",") for line in open("hospital_optimal")]
-    student_optimal = [line.strip().split(",") for line in open("student_optimal")]
+    hospital_optimal = [
+        h_pairing.strip().split(",") for h_pairing in open("hospital_optimal")
+    ]
+    student_optimal = [
+        s_pairing.strip().split(",") for s_pairing in open("student_optimal")
+    ]
 
-    # iterate through all results for students
+    # iterate through all student_optimal pairings
     for student in student_optimal:
-        # if the student and hopsital match aren't the same, print 0 and return
+        # if the student and hopsital pairings aren't the same, print 0 and return
         if student[1] != hospital_optimal[int(student[0])][0]:
             print(0)
             return
 
-    print(1)  # else all matches are the same, print 1
+    print(1)  # else all pairings are the same, print 1
 
 
 ############################################################

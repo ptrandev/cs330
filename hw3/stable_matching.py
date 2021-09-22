@@ -1,6 +1,12 @@
 # Zora Che with adaptations from Gavin Brown
 # CS330, Fall 2021
 # Stable Matching Algorithm Starter Code
+#
+# Collaborators:
+# - Malik Baker
+# - Huy Phan
+# - Dominic Maglione
+#
 
 import sys
 import time
@@ -87,24 +93,51 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
 def check_stable(N, hospital_prefs, student_prefs, match_file):
     # Implement checking of stable matches from output
 
-    # inverse student preference array
-    student_prefs = inverse_prefs(N, student_prefs)
+    # inverse student and hospital preference lists
+    inverse_student_prefs = inverse_prefs(N, student_prefs)
+    inverse_hospital_prefs = inverse_prefs(N, hospital_prefs)
 
+    # get pairings from match_file
     f = open(match_file, "r")
     pairings = f.readlines()
 
+    # create 2D array in the form of  [[hospital, student] ... [hospital, student]]
+    pairings = [[int(x) for x in pair.strip().split(",")] for pair in pairings]
+
+    # create hash table to keep track of hospital's current student assignment
+    hospital_to_student = {pair[0]: pair[1] for pair in pairings}
+
     # iterate through all pairings
     for pair in pairings:
-        pair = pair.split(",")  # create array in the form [hospital, student]
+        hospital = pair[0]  # first item in pair is hospital
+        student = pair[1]  # second item in pair is student
 
-        # check to see if student prefers
+        # find the ranking of the hospital according to the student
+        hospital_rank = inverse_student_prefs[student][hospital]
 
-    print(match_file)
-    # check that all hospitals and students have been matches
+        # get all hospitals student prefers to the current hospital
+        student_preferred_hospitals = student_prefs[student][:hospital_rank]
 
-    print(1)  # if stable
-    print(0)  # if not stable
-    # Note: Make the printing of stableness be the only print statement for submission!
+        # for each preferred hospital...
+        for preferred_hospital in student_preferred_hospitals:
+            # get the wishful student's rank
+            student_rank = inverse_hospital_prefs[preferred_hospital][student]
+
+            # get current pairing of the preferred hospital
+            current_student = hospital_to_student[preferred_hospital]
+
+            # get the rank of the current student
+            current_student_rank = inverse_hospital_prefs[preferred_hospital][
+                current_student
+            ]
+
+            # if they prefer the student we're checking to their current assignment
+            # it's unstable
+            if student_rank < current_student_rank:
+                print(0)
+                return
+
+    print(1)  # all checks passed, it's stable
 
 
 ############################################################

@@ -34,7 +34,7 @@ def inverse_prefs(N, prefs):
             # each index in list is a hospital, its value is the hopsital's rank
             ranks[i][hospital] = j
 
-    return ranks
+    return ranks  # return inverted preferences
 
 
 def run_GS(N, hospital_prefs, student_prefs, out_name):
@@ -119,7 +119,7 @@ def check_unique(N, hospital_prefs, student_prefs):
     run_GS(N, hospital_prefs, student_prefs, "hospital_optimal")
     run_GS(N, student_prefs, hospital_prefs, "student_optimal")
 
-    # create arrays from matching requests
+    # create arrays from hospital and student optimal pairing requests
     hospital_optimal = [
         h_pairing.strip().split(",") for h_pairing in open("hospital_optimal")
     ]
@@ -129,7 +129,8 @@ def check_unique(N, hospital_prefs, student_prefs):
 
     # iterate through all student_optimal pairings
     for student in student_optimal:
-        # if the student and hopsital pairings aren't the same, print 0 and return
+        # if the student and hopsital pairings aren't the same, then there is no
+        # unique stable matching print 0 and return
         if student[1] != hospital_optimal[int(student[0])][0]:
             print(0)
             return

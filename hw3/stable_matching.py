@@ -23,13 +23,15 @@ def inverse_prefs(N, prefs):
     ############################################################
     # Implement inverse preference lists as described in lecture
     ############################################################
-    ranks = N * [N * [0]]  # initialize ranks for N * N inputs
+    ranks = [
+        [0 for i in range(N)] for j in range(N)
+    ]  # initialize ranks for N * N inputs
 
     # loop through every student
     for i, student in enumerate(prefs):
         # loop through their preference list...
         for j, hospital in enumerate(student):
-            # each index in rank is the hospital, its value is the hospital's rank
+            # each index in list is a hospital, its value is the hopsital's rank
             ranks[i][hospital] = j
 
     return ranks
@@ -89,10 +91,13 @@ def check_stable(N, hospital_prefs, student_prefs, match_file):
     student_prefs = inverse_prefs(N, student_prefs)
 
     f = open(match_file, "r")
-    pairings = f.readLines()
+    pairings = f.readlines()
 
+    # iterate through all pairings
     for pair in pairings:
-        pair = pair.split(",")  # [h, s]
+        pair = pair.split(",")  # create array in the form [hospital, student]
+
+        # check to see if student prefers
 
     print(match_file)
     # check that all hospitals and students have been matches

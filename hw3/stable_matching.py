@@ -6,6 +6,7 @@
 # - Malik Baker
 # - Huy Phan
 # - Dominic Maglione
+# - Mikky Steinberg
 #
 
 import sys
@@ -131,10 +132,9 @@ def check_stable(N, hospital_prefs, student_prefs, match_file):
                 current_student
             ]
 
-            # if they prefer the student we're checking to their current assignment
-            # it's unstable
+            # if they prefer the student we're checking to their current assignment...
             if student_rank < current_student_rank:
-                print(0)
+                print(0)  # it's unstable, print 0 and return
                 return
 
     print(1)  # all checks passed, it's stable

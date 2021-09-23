@@ -90,7 +90,7 @@ def run_GS(N, hospital_prefs, student_prefs, out_name):
 # PART 2 STARTER CODE
 ############################################################
 
-# not done
+
 def check_stable(N, hospital_prefs, student_prefs, match_file):
     # Implement checking of stable matches from output
 
